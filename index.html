@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <style>
+        body{
+            display: grid;
+            place-content: center;
+            height: 100vh;
+        }
+        .container{
+            height: 580px;
+            width: 370px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 2fr repeat(5, 1fr);
+            padding: 5px;
+            gap: 5px;
+            background-color: #1c1c1c;  
+            border-radius: 40px;        
+        }
+        #inpString{
+            grid-column: span 4;
+            height: auto;
+            background-color: #1c1c1c;
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-size: 40px;
+            text-align: right;
+            padding: 20px;
+            outline: none;
+            scroll-behavior: smooth;
+            resize: none;
+        }
+        
+        button{
+            border-radius: 50%;
+            width: 87.5px;
+            height: 80px;
+            border: none;
+            background-color: #505050;
+            color: white;
+            font-size: 30px;
+            outline: none;
+        }
+        
+        .sym, .symEq{
+            background-color: #FF9500;
+            color: whitesmoke;
+        }
+
+        .dot{
+            background-color: #505050;
+        }
+
+        .white{
+            background-color: #D4D4D2;
+            color: black;
+        }
+        #num0{
+            grid-column: span 2;
+            width: 175px;
+            border-radius: 40px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <textarea id="inpString"></textarea>
+        <button id="symC" class="white">C</button>
+        <button id="symNeg" class="symS white" value="-">+/-</button>
+        <button id="sym%" class="sym white">%</button>
+        <button id="sym/" class="sym">/</button>
+        <button id="num7" class="btn">7</button>
+        <button id="num8" class="btn">8</button>
+        <button id="num9" class="btn">9</button>
+        <button id="sym*" class="sym">*</button>
+        <button id="num4" class="btn">4</button>
+        <button id="num5" class="btn">5</button>
+        <button id="num6" class="btn">6</button>
+        <button id="sym-" class="sym">-</button>
+        <button id="num1" class="btn">1</button>
+        <button id="num2" class="btn">2</button>
+        <button id="num3" class="btn">3</button>
+        <button id="sym+" class="sym">+</button>
+        <button id="num0" class="btn">0</button>
+        <button id="sym." class="sym dot">.</button>
+        <button id="symEq" class="symEq">=</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js"></script>
+    <script>
+        
+        let str = "";
+        let z = document.querySelectorAll(".btn");
+        var y = document.querySelector("#inpString");
+
+        y.addEventListener("input", ()=>{
+            str = y.value;
+        });
+
+        for(i=0; i<z.length; i++)
+        {
+            document.querySelectorAll(".btn")[i].addEventListener("click", function () {
+                var x = this.innerHTML;
+                str = str + x;
+                y.value = str;
+            });
+        }
+
+        var s = document.querySelectorAll(".sym");
+
+        for(i=0; i<s.length; i++)
+        {
+            document.querySelectorAll(".sym")[i].addEventListener("click", function (){
+                var q = this.innerHTML;
+                str = str + q;
+                y.value = str;
+            });
+        }
+
+        document.querySelector("#symC").addEventListener("click", function (){
+            str = "";
+            y.value = str;
+        });
+
+        document.querySelector("#symNeg").addEventListener("click", function (){
+            str = str + '-';
+            y.value = str;
+
+        });
+
+        document.querySelector("#symEq").addEventListener("click", function (){
+
+            str.replace(/(\d+(\.\d+)?)%/g, function (match, p1){
+                return parseFloat(p1) / 100;
+            });
+
+            try{
+                var res = math.evaluate(str);
+                str = res;
+                y.value = res;
+            }catch(e)
+            {
+                y.value = "INVALID";
+            }
+            
+        });
+    </script>
+</body>
+</html>
